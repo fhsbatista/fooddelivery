@@ -1,8 +1,7 @@
 package com.fhsbatista.fooddelivery.notifications;
 
-import org.springframework.stereotype.Component;
-
 import com.fhsbatista.fooddelivery.models.Customer;
+import org.springframework.stereotype.Component;
 
 @Component
 public class EmailNotificator implements Notificator {
