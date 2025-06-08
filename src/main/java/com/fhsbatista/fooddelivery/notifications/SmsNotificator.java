@@ -1,11 +1,10 @@
 package com.fhsbatista.fooddelivery.notifications;
 
 import com.fhsbatista.fooddelivery.models.Customer;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+@NotificationType(Priority.URGENT)
 @Component
-@Primary
 public class SmsNotificator implements Notificator{
     @Override
     public void notify(Customer customer, String message) {

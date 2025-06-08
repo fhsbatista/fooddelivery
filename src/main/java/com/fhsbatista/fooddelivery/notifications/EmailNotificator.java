@@ -1,8 +1,10 @@
 package com.fhsbatista.fooddelivery.notifications;
 
 import com.fhsbatista.fooddelivery.models.Customer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+@NotificationType(Priority.LOW)
 @Component
 public class EmailNotificator implements Notificator {
 	public EmailNotificator() {
