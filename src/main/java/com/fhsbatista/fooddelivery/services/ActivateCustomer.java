@@ -14,7 +14,7 @@ public class ActivateCustomer {
 
 	private Notificator notificator;
 	
-	public ActivateCustomer(@NotificationType(Priority.URGENT) Notificator notificator) {
+	public ActivateCustomer(@NotificationType(Priority.LOW) Notificator notificator) {
 		this.notificator = notificator;
 		System.out.println("Ativacao activate customer" + notificator);
 	}
