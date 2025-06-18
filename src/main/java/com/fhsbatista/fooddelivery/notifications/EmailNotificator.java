@@ -1,18 +1,14 @@
 package com.fhsbatista.fooddelivery.notifications;
 
 import com.fhsbatista.fooddelivery.models.Customer;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @NotificationType(Priority.LOW)
 @Component
 public class EmailNotificator implements Notificator {
-	@Value("${notificator.email.host.server}")
-	private String host;
-
-	@Value("${notificator.email.host.port}")
-	private Integer port;
+	@Autowired
+	private NotificationProperties properties;
 
 
 	public EmailNotificator() {
@@ -20,7 +16,11 @@ public class EmailNotificator implements Notificator {
 	}
 	
 	public void notify(Customer customer, String message) {
-		System.out.printf("Connecting to server %s:%s\n", host, port);
+		System.out.printf(
+				"Connecting to server %s:%s\n",
+				properties.getHostServer(),
+				properties.getPortServer()
+		);
 		System.out.printf(
 				"Notifying %s on email: %s\n", 
 				customer.getName(), 
