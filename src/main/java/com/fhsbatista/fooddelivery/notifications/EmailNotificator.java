@@ -2,13 +2,20 @@ package com.fhsbatista.fooddelivery.notifications;
 
 import com.fhsbatista.fooddelivery.models.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+@Profile("prod")
 @NotificationType(Priority.LOW)
 @Component
 public class EmailNotificator implements Notificator {
 	@Autowired
 	private NotificationProperties properties;
+
+	public void teste() {
+		System.out.println("Host: " + properties.getHostServer());
+		System.out.println("Port: " + properties.getPortServer());
+	}
 
 
 	public EmailNotificator() {
