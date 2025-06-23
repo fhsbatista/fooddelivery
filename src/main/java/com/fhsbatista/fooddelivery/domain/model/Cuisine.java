@@ -1,9 +1,6 @@
 package com.fhsbatista.fooddelivery.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -11,6 +8,7 @@ import java.util.Objects;
 @Table(name = "cuisines")
 public class Cuisine {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
