@@ -19,6 +19,9 @@ public class Restaurant {
     @Column(name = "delivery_tax")
     private BigDecimal deliveryTax;
 
+    @ManyToOne
+    private Cuisine cuisine;
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
