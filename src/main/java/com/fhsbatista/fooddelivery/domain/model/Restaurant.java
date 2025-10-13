@@ -20,6 +20,7 @@ public class Restaurant {
     private BigDecimal deliveryTax;
 
     @ManyToOne
+    @JoinColumn(name = "cuisine_id")
     private Cuisine cuisine;
 
     @Override
