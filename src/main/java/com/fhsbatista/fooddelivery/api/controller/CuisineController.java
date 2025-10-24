@@ -25,6 +25,11 @@ public class CuisineController {
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
     ResponseEntity<Cuisine> find(@PathVariable("id") Long id) {
         final var cuisine = repository.findById(id);
+
+        if (cuisine == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok(cuisine);
     }
 }
