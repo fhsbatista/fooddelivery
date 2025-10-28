@@ -2,6 +2,7 @@ package com.fhsbatista.fooddelivery.api.controller;
 
 import com.fhsbatista.fooddelivery.domain.model.Cuisine;
 import com.fhsbatista.fooddelivery.domain.repository.CuisineRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,5 +32,39 @@ public class CuisineController {
         }
 
         return ResponseEntity.ok(cuisine);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public Cuisine create(@RequestBody Cuisine cuisine) {
+        return repository.save(cuisine);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{id}")
+    public ResponseEntity<Cuisine> update(@PathVariable Long id, @RequestBody Cuisine cuisine) {
+        final var currentCuisine = repository.findById(id);
+
+        if (currentCuisine == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        BeanUtils.copyProperties(cuisine, currentCuisine, "id");
+
+        final var updatedCuisine = repository.update(currentCuisine);
+
+        return ResponseEntity.ok(updatedCuisine);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Cuisine> delete(@PathVariable Long id) {
+        final var cuisine = repository.findById(id);
+
+        if (cuisine == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        repository.delete(cuisine);
+        return ResponseEntity.noContent().build();
     }
 }
