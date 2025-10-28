@@ -2,6 +2,7 @@ package com.fhsbatista.fooddelivery.api.controller;
 
 import com.fhsbatista.fooddelivery.domain.model.Cuisine;
 import com.fhsbatista.fooddelivery.domain.repository.CuisineRepository;
+import com.fhsbatista.fooddelivery.domain.service.RegisterCuisineService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +18,9 @@ import java.util.List;
 public class CuisineController {
     @Autowired
     private CuisineRepository repository;
+
+    @Autowired
+    private RegisterCuisineService registerCuisineService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -52,7 +56,7 @@ public class CuisineController {
 
         BeanUtils.copyProperties(cuisine, currentCuisine, "id");
 
-        final var updatedCuisine = repository.update(currentCuisine);
+        final var updatedCuisine = registerCuisineService.save(currentCuisine);
 
         return ResponseEntity.ok(updatedCuisine);
     }
