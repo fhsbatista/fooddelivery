@@ -5,6 +5,7 @@ import com.fhsbatista.fooddelivery.domain.repository.CuisineRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,11 @@ public class JpaCuisineRepository implements CuisineRepository {
     @Transactional
     public void delete(Cuisine cuisine) {
         cuisine = findById(cuisine.getId());
+
+        if (cuisine == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
         entityManager.remove(cuisine);
     }
 }
