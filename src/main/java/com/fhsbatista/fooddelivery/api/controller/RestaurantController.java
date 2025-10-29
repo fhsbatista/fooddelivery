@@ -1,13 +1,11 @@
 package com.fhsbatista.fooddelivery.api.controller;
 
+import com.fhsbatista.fooddelivery.domain.model.Cuisine;
 import com.fhsbatista.fooddelivery.domain.model.Restaurant;
 import com.fhsbatista.fooddelivery.domain.repository.RestaurantRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +22,16 @@ public class RestaurantController {
     @ResponseStatus(HttpStatus.OK)
     public List<Restaurant> list() {
         return repository.list();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Restaurant> find(@PathVariable Long id) {
+        final var restaurant = repository.findById(id);
+
+        if (restaurant == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(restaurant);
     }
 }
