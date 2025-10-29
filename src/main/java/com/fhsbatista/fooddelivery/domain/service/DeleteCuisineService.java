@@ -4,7 +4,9 @@ import com.fhsbatista.fooddelivery.domain.exceptions.EntityInUseException;
 import com.fhsbatista.fooddelivery.domain.exceptions.EntityNotFoundException;
 import com.fhsbatista.fooddelivery.domain.repository.CuisineRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DeleteCuisineService {
     private final CuisineRepository repository;
 

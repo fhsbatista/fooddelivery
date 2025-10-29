@@ -6,6 +6,7 @@ import com.fhsbatista.fooddelivery.domain.model.Cuisine;
 import com.fhsbatista.fooddelivery.domain.repository.CuisineRepository;
 import com.fhsbatista.fooddelivery.domain.service.DeleteCuisineService;
 import com.fhsbatista.fooddelivery.domain.service.RegisterCuisineService;
+import com.fhsbatista.fooddelivery.domain.service.UpdateCuisineService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,9 @@ public class CuisineController {
 
     @Autowired
     private DeleteCuisineService deleteCuisineService;
+
+    @Autowired
+    private UpdateCuisineService updateCuisineService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -53,17 +57,12 @@ public class CuisineController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
     public ResponseEntity<Cuisine> update(@PathVariable Long id, @RequestBody Cuisine cuisine) {
-        final var currentCuisine = repository.findById(id);
-
-        if (currentCuisine == null) {
+        try {
+            final var updatedCuisine = updateCuisineService.update(id, cuisine);
+            return ResponseEntity.ok(updatedCuisine);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
-        BeanUtils.copyProperties(cuisine, currentCuisine, "id");
-
-        final var updatedCuisine = registerCuisineService.save(currentCuisine);
-
-        return ResponseEntity.ok(updatedCuisine);
     }
 
     @DeleteMapping("/{id}")
