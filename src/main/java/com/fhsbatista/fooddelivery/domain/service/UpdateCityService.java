@@ -1,0 +1,39 @@
+package com.fhsbatista.fooddelivery.domain.service;
+
+import com.fhsbatista.fooddelivery.domain.exceptions.EntityNotFoundException;
+import com.fhsbatista.fooddelivery.domain.model.City;
+import com.fhsbatista.fooddelivery.domain.repository.CityRepository;
+import com.fhsbatista.fooddelivery.domain.repository.StateRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UpdateCityService {
+    private final CityRepository cityRepository;
+    private final StateRepository stateRepository;
+
+    public UpdateCityService(
+            CityRepository cityRepository,
+            StateRepository stateRepository
+    ) {
+        this.cityRepository = cityRepository;
+        this.stateRepository = stateRepository;
+    }
+
+    public City update(Long id, City city) {
+        final var state = stateRepository.findById(city.getState().getId());
+        if (state == null) {
+            throw new EntityNotFoundException();
+        }
+
+        final var currentCity = cityRepository.findById(id);
+        if (currentCity == null) {
+            throw new EntityNotFoundException();
+        }
+
+        BeanUtils.copyProperties(city, currentCity, "id");
+        cityRepository.save(currentCity);
+        return currentCity;
+    }
+}
+
