@@ -1,17 +1,29 @@
 package com.fhsbatista.fooddelivery.api.controller;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fhsbatista.fooddelivery.domain.exceptions.EntityNotFoundException;
-import com.fhsbatista.fooddelivery.domain.model.Cuisine;
 import com.fhsbatista.fooddelivery.domain.model.Restaurant;
 import com.fhsbatista.fooddelivery.domain.repository.CuisineRepository;
 import com.fhsbatista.fooddelivery.domain.repository.RestaurantRepository;
 import com.fhsbatista.fooddelivery.domain.service.RegisterRestaurantService;
 import com.fhsbatista.fooddelivery.domain.service.UpdateRestaurantService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -61,6 +73,32 @@ public class RestaurantController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Restaurant> update(@RequestBody Restaurant restaurant) {
+        try {
+            final var persisted = updateRestaurantService.update(restaurant);
+            return ResponseEntity.ok(persisted);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Restaurant> patch(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+        final var restaurant = repository.findById(id);
+
+        if (restaurant == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        final var objectMapper = new ObjectMapper();
+
+        fields.forEach((key, value) -> {
+            final Field field = ReflectionUtils.findField(Restaurant.class, key);
+            field.setAccessible(true);
+
+            final var newValue = objectMapper.convertValue(value, field.getType());
+            ReflectionUtils.setField(field, restaurant, newValue);
+        });
+
         try {
             final var persisted = updateRestaurantService.update(restaurant);
             return ResponseEntity.ok(persisted);

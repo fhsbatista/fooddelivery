@@ -1,11 +1,12 @@
 package com.fhsbatista.fooddelivery.domain.service;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
 import com.fhsbatista.fooddelivery.domain.exceptions.EntityNotFoundException;
 import com.fhsbatista.fooddelivery.domain.model.City;
 import com.fhsbatista.fooddelivery.domain.repository.CityRepository;
 import com.fhsbatista.fooddelivery.domain.repository.StateRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateCityService {
@@ -14,8 +15,7 @@ public class UpdateCityService {
 
     public UpdateCityService(
             CityRepository cityRepository,
-            StateRepository stateRepository
-    ) {
+            StateRepository stateRepository) {
         this.cityRepository = cityRepository;
         this.stateRepository = stateRepository;
     }
@@ -32,8 +32,6 @@ public class UpdateCityService {
         }
 
         BeanUtils.copyProperties(city, currentCity, "id");
-        cityRepository.save(currentCity);
-        return currentCity;
+        return cityRepository.save(currentCity);
     }
 }
-
