@@ -28,6 +28,13 @@ public class JpaCuisineRepository implements CuisineRepository {
     }
 
     @Override
+    public List<Cuisine> listByName(String name) {
+        final var query = entityManager.createQuery("from Cuisine where name like :name", Cuisine.class)
+                .setParameter("name", "%" + name + "%");
+        return query.getResultList();
+    }
+
+    @Override
     @Transactional
     public Cuisine save(Cuisine cuisine) {
         return entityManager.merge(cuisine);
