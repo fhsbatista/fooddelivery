@@ -21,15 +21,13 @@ public class UpdateRestaurantService {
     }
 
     public Restaurant update(Restaurant restaurant) {
-        final var cuisine = cuisineRepository.findById(restaurant.getCuisine().getId());
-        if (cuisine == null) {
-            throw new EntityNotFoundException();
-        }
+        final var cuisine = cuisineRepository
+                .findById(restaurant.getCuisine().getId())
+                .orElseThrow(EntityNotFoundException::new);
 
-        final var currentRestaurant = restaurantRepository.findById(restaurant.getId());
-        if (currentRestaurant == null) {
-            throw new EntityNotFoundException();
-        }
+        final var currentRestaurant = restaurantRepository
+                .findById(restaurant.getId())
+                .orElseThrow(EntityNotFoundException::new);
 
         BeanUtils.copyProperties(restaurant, currentRestaurant, "id");
         restaurantRepository.save(currentRestaurant);

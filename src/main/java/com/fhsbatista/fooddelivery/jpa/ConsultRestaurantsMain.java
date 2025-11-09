@@ -10,7 +10,7 @@ public class ConsultRestaurantsMain {
         final var context = new SpringApplicationBuilder(FooddeliveryApplication.class).web(WebApplicationType.NONE).run();
 
         final var registerRestaurant = context.getBean(RestaurantRepository.class);
-        final var restaurants = registerRestaurant.list();
+        final var restaurants = registerRestaurant.findAll();
 
         restaurants.forEach(r -> {
             System.out.printf("%s - %f - %s\n", r.getName(), r.getDeliveryTax(), r.getCuisine().getName());

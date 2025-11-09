@@ -47,18 +47,13 @@ public class RestaurantController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Restaurant> list() {
-        return repository.list();
+        return repository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> find(@PathVariable Long id) {
         final var restaurant = repository.findById(id);
-
-        if (restaurant == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(restaurant);
+        return restaurant.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -83,11 +78,13 @@ public class RestaurantController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Restaurant> patch(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
-        final var restaurant = repository.findById(id);
+        final var maybeRestaurant = repository.findById(id);
 
-        if (restaurant == null) {
+        if (maybeRestaurant.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        final var restaurant = maybeRestaurant.get();
 
         final var objectMapper = new ObjectMapper();
 
