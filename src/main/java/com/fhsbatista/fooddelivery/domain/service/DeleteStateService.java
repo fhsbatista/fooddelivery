@@ -16,11 +16,7 @@ public class DeleteStateService {
 
     public void delete(Long id) {
         try {
-            final var state = repository.findById(id);
-
-            if (state == null) {
-                throw new EntityNotFoundException();
-            }
+            final var state = repository.findById(id).orElseThrow(EntityInUseException::new);
             repository.delete(state);
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException();

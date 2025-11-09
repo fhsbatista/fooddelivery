@@ -33,18 +33,13 @@ public class StateController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     List<State> list() {
-        return repository.list();
+        return repository.findAll();
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     ResponseEntity<State> find(@PathVariable("id") Long id) {
         final var state = repository.findById(id);
-
-        if (state == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(state);
+        return state.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @ResponseStatus(HttpStatus.CREATED)

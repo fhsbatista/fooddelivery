@@ -15,12 +15,7 @@ public class UpdateStateService {
     }
 
     public State update(Long id, State state) {
-        final var currentState = repository.findById(id);
-
-        if (currentState == null) {
-            throw new EntityNotFoundException();
-        }
-
+        final var currentState = repository.findById(id).orElseThrow(EntityNotFoundException::new);
         BeanUtils.copyProperties(state, currentState, "id");
         return repository.save(currentState);
     }

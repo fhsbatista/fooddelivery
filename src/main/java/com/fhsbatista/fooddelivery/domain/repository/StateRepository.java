@@ -1,13 +1,7 @@
 package com.fhsbatista.fooddelivery.domain.repository;
 
 import com.fhsbatista.fooddelivery.domain.model.State;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface StateRepository {
-    List<State> list();
-    State findById(Long id);
-    State save(State state);
-    State update(State state);
-    void delete(State state);
+public interface StateRepository extends JpaRepository<State, Long> {
 }
