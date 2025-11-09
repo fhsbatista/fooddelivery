@@ -1,6 +1,7 @@
 package com.fhsbatista.fooddelivery.jpa;
 
 import com.fhsbatista.fooddelivery.FooddeliveryApplication;
+import com.fhsbatista.fooddelivery.domain.exceptions.EntityNotFoundException;
 import com.fhsbatista.fooddelivery.domain.model.Cuisine;
 import com.fhsbatista.fooddelivery.domain.repository.CuisineRepository;
 import org.springframework.boot.WebApplicationType;
@@ -16,7 +17,7 @@ public class ConsultByIdCuisineMain {
         ).web(WebApplicationType.NONE).run(args);
 
         final var registerCuisine = applicationContext.getBean(CuisineRepository.class);
-        final var cuisine = registerCuisine.findById(1L);
+        final var cuisine = registerCuisine.findById(1L).orElseThrow(EntityNotFoundException::new);
 
 
         System.out.printf("Id: %d || Nome: %s\n", cuisine.getId(), cuisine.getName());

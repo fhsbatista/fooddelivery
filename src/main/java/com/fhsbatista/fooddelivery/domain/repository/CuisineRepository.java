@@ -1,14 +1,9 @@
 package com.fhsbatista.fooddelivery.domain.repository;
 
 import com.fhsbatista.fooddelivery.domain.model.Cuisine;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface CuisineRepository {
-    List<Cuisine> list();
-    List<Cuisine> listByName(String name);
-    Cuisine findById(Long id);
-    Cuisine save(Cuisine cuisine);
-    Cuisine update(Cuisine cuisine);
-    void delete(Cuisine cuisine);
+@Repository
+public interface CuisineRepository extends JpaRepository<Cuisine, Long> {
 }

@@ -16,11 +16,7 @@ public class DeleteCuisineService {
 
     public void delete(Long id) {
         try {
-            final var cuisine = repository.findById(id);
-
-            if (cuisine == null) {
-                throw new EntityNotFoundException();
-            }
+            final var cuisine = repository.findById(id).orElseThrow(EntityInUseException::new);
             repository.delete(cuisine);
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException();

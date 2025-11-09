@@ -34,18 +34,14 @@ public class CuisineController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     List<Cuisine> list() {
-        return repository.list();
+        return repository.findAll();
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     ResponseEntity<Cuisine> find(@PathVariable("id") Long id) {
         final var cuisine = repository.findById(id);
+        return cuisine.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
-        if (cuisine == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(cuisine);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

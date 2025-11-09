@@ -20,6 +20,6 @@ public class UpdateCuisineMain {
         cuisine1.setId(1L);
         cuisine1.setName("american");
 
-        registerCuisine.update(cuisine1);
+        registerCuisine.save(cuisine1);
     }
 }

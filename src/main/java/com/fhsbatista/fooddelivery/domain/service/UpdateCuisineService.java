@@ -15,11 +15,7 @@ public class UpdateCuisineService {
     }
 
     public Cuisine update(Long id, Cuisine cuisine) {
-        final var currentCuisine = repository.findById(id);
-
-        if (currentCuisine == null) {
-            throw new EntityNotFoundException();
-        }
+        final var currentCuisine = repository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         BeanUtils.copyProperties(cuisine, currentCuisine, "id");
         return repository.save(currentCuisine);
