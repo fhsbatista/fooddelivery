@@ -33,18 +33,13 @@ public class CityController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     List<City> list() {
-        return repository.list();
+        return repository.findAll();
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     ResponseEntity<City> find(@PathVariable("id") Long id) {
         final var city = repository.findById(id);
-
-        if (city == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(city);
+        return city.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

@@ -16,11 +16,7 @@ public class DeleteCityService {
 
     public void delete(Long id) {
         try {
-            final var city = repository.findById(id);
-
-            if (city == null) {
-                throw new EntityNotFoundException();
-            }
+            final var city = repository.findById(id).orElseThrow(EntityInUseException::new);
             repository.delete(city);
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException();

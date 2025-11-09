@@ -26,10 +26,7 @@ public class UpdateCityService {
             throw new EntityNotFoundException();
         }
 
-        final var currentCity = cityRepository.findById(id);
-        if (currentCity == null) {
-            throw new EntityNotFoundException();
-        }
+        final var currentCity = cityRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         BeanUtils.copyProperties(city, currentCity, "id");
         return cityRepository.save(currentCity);
