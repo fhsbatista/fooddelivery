@@ -10,3 +10,4 @@ public interface RestaurantRepository extends
         RestaurantRepositoryQueries,
         JpaSpecificationExecutor<Restaurant> {
 }
+
