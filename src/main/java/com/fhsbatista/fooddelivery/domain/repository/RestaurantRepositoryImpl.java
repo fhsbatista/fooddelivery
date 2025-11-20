@@ -4,9 +4,12 @@ import com.fhsbatista.fooddelivery.domain.model.Restaurant;
 import com.fhsbatista.fooddelivery.infra.repository.RestaurantRepositoryQueries;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -55,5 +58,25 @@ public class RestaurantRepositoryImpl implements RestaurantRepositoryQueries {
         final var query = entityManager.createQuery(jpql.toString(), Restaurant.class);
         parameters.forEach(query::setParameter);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Restaurant> criteriaApiFindAll(String name, BigDecimal initialDeliveryTax, BigDecimal finalDeliveryTax) {
+        final var criteriaBuilder = entityManager.getCriteriaBuilder();
+        final var criteriaQuery = criteriaBuilder.createQuery(Restaurant.class);
+        final var root = criteriaQuery.from(Restaurant.class);
+        final var predicates = new ArrayList<Predicate>();
+        if (StringUtils.hasText(name)) {
+            predicates.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
+        }
+        if (initialDeliveryTax != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("deliveryTax"), initialDeliveryTax));
+        }
+        if (finalDeliveryTax != null) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("deliveryTax"), finalDeliveryTax));
+        }
+        criteriaQuery.where(predicates.toArray(new Predicate[0])); //Converts arraylist to var args
+
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }
