@@ -30,7 +30,7 @@ public class TestController {
 
     @GetMapping("/restaurants/free-delivery")
     List<Restaurant> findFreeDelivery(@RequestParam String name) {
-        return restaurantRepository.findAll(freeDelivery().and(similarName(name)));
+        return restaurantRepository.findAllFreeDelivery(name);
     }
 
 }

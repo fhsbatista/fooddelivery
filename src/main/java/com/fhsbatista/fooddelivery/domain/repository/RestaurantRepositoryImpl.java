@@ -4,22 +4,27 @@ import com.fhsbatista.fooddelivery.domain.model.Restaurant;
 import com.fhsbatista.fooddelivery.infra.repository.RestaurantRepositoryQueries;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
-import org.springframework.util.StringUtils;
+import static com.fhsbatista.fooddelivery.infra.repository.specification.RestaurantSpecs.freeDelivery;
+import static com.fhsbatista.fooddelivery.infra.repository.specification.RestaurantSpecs.similarName;
 
 @Repository
 public class RestaurantRepositoryImpl implements RestaurantRepositoryQueries {
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired @Lazy
+    private RestaurantRepository restaurantRepository;
 
     @Override
     public List<Restaurant> findAll(String name, BigDecimal initialDeliveryTax, BigDecimal finalDeliveryTax) {
@@ -78,5 +83,10 @@ public class RestaurantRepositoryImpl implements RestaurantRepositoryQueries {
         criteriaQuery.where(predicates.toArray(new Predicate[0])); //Converts arraylist to var args
 
         return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
+    public List<Restaurant> findAllFreeDelivery(String name) {
+        return restaurantRepository.findAll(freeDelivery().and(similarName(name)));
     }
 }
