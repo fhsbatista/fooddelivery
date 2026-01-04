@@ -35,6 +35,9 @@ public class Restaurant {
     )
     private List<PaymentType> paymentTypes = new ArrayList<>();
 
+    @Embedded
+    private Address address;
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
