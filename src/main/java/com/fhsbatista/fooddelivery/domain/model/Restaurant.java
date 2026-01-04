@@ -1,9 +1,12 @@
 package com.fhsbatista.fooddelivery.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +26,14 @@ public class Restaurant {
     @ManyToOne
     @JoinColumn(name = "cuisine_id", nullable = false)
     private Cuisine cuisine;
+
+    @ManyToMany
+    @JoinTable(
+            name = "restaurant_payment_types",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_type_id")
+    )
+    private List<PaymentType> paymentTypes = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

@@ -1,8 +1,10 @@
 package com.fhsbatista.fooddelivery.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +17,10 @@ public class Cuisine {
 
     @Column(nullable = false)
     private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cuisine")
+    private List<Restaurant> restaurants;
 
     @Override
     public boolean equals(Object o) {
