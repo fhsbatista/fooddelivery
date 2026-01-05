@@ -17,7 +17,9 @@ insert into restaurants (
     neighborhood,
     number,
     complement,
-    city_id
+    city_id,
+    created_at,
+    updated_at
 ) values (
     1,
     'Hitaka food',
@@ -28,7 +30,9 @@ insert into restaurants (
     'Bela Vista',
     '1000',
     'Apto 123',
-    1
+    1,
+    utc_timestamp(),
+    utc_timestamp()
 );
 insert into restaurants (
     id,
@@ -40,7 +44,9 @@ insert into restaurants (
     neighborhood,
     number,
     complement,
-    city_id
+    city_id,
+    created_at,
+    updated_at
 ) values (
     2,
     'Aikiko',
@@ -51,7 +57,9 @@ insert into restaurants (
     'Copacabana',
     '1500',
     'Loja 45',
-    2
+    2,
+    utc_timestamp(),
+    utc_timestamp()
 );
 insert into restaurants (
     id,
@@ -63,7 +71,9 @@ insert into restaurants (
     neighborhood,
     number,
     complement,
-    city_id
+    city_id,
+    created_at,
+    updated_at
 ) values (
     3,
     'Lee food',
@@ -74,7 +84,9 @@ insert into restaurants (
     'Centro',
     '2500',
     null,
-    3
+    3,
+    utc_timestamp(),
+    utc_timestamp()
 );
 insert into restaurants (
     id,
@@ -86,7 +98,9 @@ insert into restaurants (
     neighborhood,
     number,
     complement,
-    city_id
+    city_id,
+    created_at,
+    updated_at
 ) values (
     4,
     'Mamma mia',
@@ -97,7 +111,9 @@ insert into restaurants (
     'Jardins',
     '500',
     'Sobrado',
-    1
+    1,
+    utc_timestamp(),
+    utc_timestamp()
 );
 insert into payment_types (id, description) values (1, 'CARD_DEBIT');
 insert into payment_types (id, description) values (2, 'CARD_CREDIT');

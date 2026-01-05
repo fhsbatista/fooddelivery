@@ -29,7 +29,7 @@ public class UpdateRestaurantService {
                 .findById(restaurant.getId())
                 .orElseThrow(EntityNotFoundException::new);
 
-        BeanUtils.copyProperties(restaurant, currentRestaurant, "id");
+        BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "deliveryTax", "cuisine", "paymentTypes", "address", "createdAt");
         restaurantRepository.save(currentRestaurant);
         return currentRestaurant;
     }
