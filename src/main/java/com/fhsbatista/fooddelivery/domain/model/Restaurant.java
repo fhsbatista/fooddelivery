@@ -30,6 +30,10 @@ public class Restaurant {
     @JoinColumn(name = "cuisine_id", nullable = false)
     private Cuisine cuisine;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Product> products;
+
     @ManyToMany
     @JoinTable(
             name = "restaurant_payment_types",
